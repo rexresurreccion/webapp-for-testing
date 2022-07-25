@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-testing
+spec:
+  selector:
+    app.rex/name: webapp-example
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-testing-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.rex/name: webapp-example
+  template:
+    metadata:
+      labels:
+        app.rex/name: webapp-example
+    spec:
+      containers:
+        - name: webapp-example-node
+          image: rexresurreccionhome/webapp-for-testing:latest
+
